@@ -1,39 +1,73 @@
 from datetime import datetime
+import os
+import logging
+from logging.handlers import RotatingFileHandler
+import sqlalchemy as sa
 
 import requests
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_bootstrap import Bootstrap5
+from flask.logging import default_handler
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from forms import RegisterForm, LoginForm, NewListForm, AddForm, EditGameForm
 from models import db, User, VideogameList, Videogame, login_user, LoginManager, current_user, \
     logout_user
 
-CLIENT_ID = "rcjhzbpj5l9lqhox3m5t2wtet22zcd"  # use Client-ID
-CLIENT_SECRET = "38yg8g6l5bzab0jtowqo3mid8h6ie5"
-ACCESS_TOKEN = "xk6g3uyojz1t8ucr2x9bi06augngyq"
-AUTHORIZATION = f"Bearer {ACCESS_TOKEN}"
+AUTHORIZATION = f"Bearer {os.environ['ACCESS_TOKEN']}"
 
-HEADERS = {"Client-ID": CLIENT_ID, "Authorization": AUTHORIZATION}
+HEADERS = {"Client-ID": os.environ['CLIENT_ID'], "Authorization": AUTHORIZATION}
 
 GAMES_URL = "https://api.igdb.com/v4/games/"
 
 IMG_URL = "https://images.igdb.com/igdb/image/upload/t_1080p/"
 SCREEN_URL = "https://images.igdb.com/igdb/image/upload/t_screenshot_big/"
 
-# use payload
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'ultrahipermegasecretkey'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///videogame_collection.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL').replace("postgres://", "postgresql://", 1)
 bootstrap = Bootstrap5(app)
 db.init_app(app)
 
-with app.app_context():
-    db.create_all()
-
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+
+# with app.app_context():
+#     db.create_all()
+
+
+def configure_logging(app):
+    # Logging Configuration
+    if app.config['LOG_WITH_GUNICORN']:
+        gunicorn_error_logger = logging.getLogger('gunicorn.error')
+        app.logger.handlers.extend(gunicorn_error_logger.handlers)
+        app.logger.setLevel(logging.DEBUG)
+    else:
+        file_handler = RotatingFileHandler('instance/flask-user-management.log',
+                                           maxBytes=16384,
+                                           backupCount=20)
+        file_formatter = logging.Formatter(
+            '%(asctime)s %(levelname)s %(threadName)s-%(thread)d: %(message)s [in %(filename)s:%(lineno)d]')
+        file_handler.setFormatter(file_formatter)
+        file_handler.setLevel(logging.INFO)
+        app.logger.addHandler(file_handler)
+
+    # Remove the default logger configured by Flask
+    app.logger.removeHandler(default_handler)
+
+    app.logger.info('Starting the Flask User Management App...')
+
+
+engine = sa.create_engine(app.config['SQLALCHEMY_DATABASE_URI'])
+inspector = sa.inspect(engine)
+if not inspector.has_table("user"):
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
+        app.logger.info('Initialized the database!')
+else:
+    app.logger.info('Database already contains the users table.')
 
 
 @login_manager.user_loader
