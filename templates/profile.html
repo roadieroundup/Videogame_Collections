@@ -1,0 +1,56 @@
+{% include "header.html" %}
+
+<div class="container py-5" style="background: #2c2f34">
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto text-center text-white">
+            <h1 class="display-4"><i class="bi bi-person-circle"></i>{{user.name}}</h1>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-sm p-5">
+        <div class="row g-3 ml-5">
+            {% if not user.videogame_lists %}
+            <div class="col">
+                <h5>User has no lists</h5>
+                {% if current_user.id == user.id %}
+                <a href="{{url_for('new_list')}}" role="button" class="btn btn-outline-primary">Create a new list</a>
+                {% endif %}
+            </div>
+            {% else %}
+            {% for list in user.videogame_lists %}
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="card text-black h-100" style="width: 15rem; ">
+                    <img src="{{list.img_url}}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">{{list.name}}</h5>
+                        <p class="card-text">{{list.description}}</p>
+
+                    </div>
+                    <div class="card-footer-res mx-auto py-2 border-top-0 ">
+                        <div class="row my-auto">
+                            <div class="col">
+                                <a href="{{url_for('show_list', list_id=list.id)}}" class="btn btn-outline-primary">View
+                                    List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+        </div>
+
+
+    </div>
+</div>
+
+{% if current_user.id == user.id %}
+<div class="container text-center add">
+    <a href="{{ url_for('delete_user', user_id=user.id) }}" role="button"
+       class="btn btn-outline-danger mb-2 mx-3">Delete Account</a>
+</div>
+{% endif %}
+
+
+{% include "footer.html" %}

@@ -1,0 +1,28 @@
+{% from 'bootstrap5/form.html' import render_form, render_field %}
+
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog text-white">
+        <div class="modal-content bg-dark">
+            <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="loginModalLabel">Create Account</h1>
+            </div>
+            <div class="modal-body">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                {% for message in messages %}
+                <p style="color:red;">{{ message }}</p>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                {% if not current_user.is_authenticated %}
+                {{render_field(log_form.email)}}
+                {{render_field(log_form.password)}}
+                {% endif %}
+            </div>
+            <div class="modal-footer border-0">
+                {{render_field(log_form.submit)}}
+            </div>
+        </div>
+    </div>
+</div>
+

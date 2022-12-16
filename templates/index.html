@@ -1,0 +1,80 @@
+{% include "header.html" %}
+
+<div id="carousel" class="carousel slide carousel-fade bg-dark" data-bs-ride="carousel">
+
+    <div class="carousel-inner text-white">
+
+        <div class="carousel-item active d-flex align-items-center" data-bs-interval="90000"
+             style="
+                background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
+                                  url('https://images.igdb.com/igdb/image/upload/t_1080p/{{ games[0].screenshots[0].image_id }}.png');
+                                  height: 100vh;"
+        >
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col d-flex align-items-center">
+                        <div class="title_des">
+                            <h1>{{ games[0].name }}</h1>
+                            <p>{{games[0].summary.split('.')[0]}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4"></div>
+                    <div class="col">
+                        <div class="cardIndex card mx-auto">
+                            <img
+                                    src="https://images.igdb.com/igdb/image/upload/t_1080p/{{ games[0].cover.image_id }}.png"
+                                    class="card-img-top"
+                                    alt="game image"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% for game in games[1:] %}
+
+        <div class="carousel-item d-flex align-items-center" data-bs-interval="90000"
+             style="
+                background-image: linear-gradient(rgba(0, 0, 0, 0.527), rgba(0, 0, 0, 0.5)),
+                                  url('https://images.igdb.com/igdb/image/upload/t_1080p/{{ game.screenshots[0].image_id }}.png');
+                                  height: 100vh;"
+        >
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col d-flex align-items-center">
+                        <div class="title_des">
+                            <h1>{{ game.name }}</h1>
+                            <p>{{game.summary.split('.')[0]}}</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-4"></div>
+                    <div class="col">
+                        <div class="cardIndex card mx-auto">
+                            <img
+                                    src="https://images.igdb.com/igdb/image/upload/t_1080p/{{ game.cover.image_id }}.png"
+                                    class="card-img-top"
+                                    alt="game image"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        {% endfor %}
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#carousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+{% include "footer.html" %}

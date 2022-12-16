@@ -1,0 +1,25 @@
+{% include "header.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+
+<div class="container py-5" style="background: #2c2f34">
+    <div class="row mb-4">
+        <div class="col-lg-8 mx-auto text-center text-white">
+            <h1 class="display-4">New List</h1>
+            <p class="lead mb-0">Create your video game list</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-7 mx-auto">
+            <div class="bg-white rounded-lg shadow-sm p-5">
+
+                {{ render_form(form) }}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% include "footer.html" %}
