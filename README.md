@@ -23,6 +23,8 @@ I love videogames and I never heard of a place like this focused on one of my fa
 
 ![user_flow](readme_files/user_flow.png?raw=true "UserFlow")
 
+[User flow on figma](https://www.figma.com/file/aWPoBUJwamP9WRBkVHCKgt/Video-game-collections?node-id=0%3A1&t=KkM3yYxhBcQDXS5N-1)
+
 ## Live site
 
 https://video-game-collections.onrender.com/
