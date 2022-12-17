@@ -1,7 +1,7 @@
 ![banner](readme_files/rmbanner.png?raw=true "banner")
 
 ## What is this?
-Video game collections is a small project that allow you to create your own video game lists.
+Video game collections is a small project that allow you to create your own video game lists.\
 ![demo](readme_files/demo.gif?raw=true "Demo")
 
 ## Why?
