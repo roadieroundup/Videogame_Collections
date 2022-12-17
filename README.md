@@ -1,2 +1,2 @@
-![banner](readme_files/banner.jpg?raw=true "Title")
+![banner](readme_files/banner.png?raw=true "Title")
 
